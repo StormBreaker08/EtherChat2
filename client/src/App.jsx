@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { Shield, Radio, Users, MessageCircle, Phone, PhoneOff } from 'lucide-react';
 import ChatBox from './components/chatBox';
