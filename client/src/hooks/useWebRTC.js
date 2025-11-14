@@ -1,9 +1,8 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import SimplePeer from 'simple-peer';
-import { io } from 'socket.io-client';
+import {socket} from '../sockets';
 
 export const useWebRTC = (codename) => {
-  const [socket, setSocket] = useState(null);
   const [roomId, setRoomId] = useState('');
   const [isConnected, setIsConnected] = useState(false);
   const [peers, setPeers] = useState(new Map());
@@ -18,26 +17,24 @@ export const useWebRTC = (codename) => {
 
   // Initialize Socket.io connection
   const connectToServer = useCallback(() => {
-    const newSocket = io('http://localhost:3001', {
-      transports: ['websocket', 'polling']
-    });
+    
 
-    newSocket.on('connect', () => {
-      console.log('Connected to signaling server:', newSocket.id);
+    socket.on('connect', () => {
+      console.log('Connected to signaling server:', socket.id);
       setIsConnected(true);
     });
 
-    newSocket.on('disconnect', () => {
+    socket.on('disconnect', () => {
       console.log('Disconnected from signaling server');
       setIsConnected(false);
     });
 
-    newSocket.on('room-users', (users) => {
+    socket.on('room-users', (users) => {
       console.log('Room users:', users);
       setRoomUsers(users);
     });
 
-    newSocket.on('user-joined', ({ userId, codename, users }) => {
+    socket.on('user-joined', ({ userId, codename, users }) => {
       console.log(`User joined: ${codename}`);
       setRoomUsers(users);
       addMessage({
@@ -47,7 +44,7 @@ export const useWebRTC = (codename) => {
       });
     });
 
-    newSocket.on('user-left', ({ userId, codename, users }) => {
+    socket.on('user-left', ({ userId, codename, users }) => {
       console.log(`User left: ${codename}`);
       setRoomUsers(users);
       addMessage({
@@ -65,17 +62,17 @@ export const useWebRTC = (codename) => {
       }
     });
 
-    newSocket.on('call-incoming', ({ from, codename: callerName }) => {
+    socket.on('call-incoming', ({ from, codename: callerName }) => {
       console.log(`Incoming call from: ${callerName}`);
       setIncomingCall({ from, codename: callerName });
     });
 
-    newSocket.on('call-accepted', ({ from }) => {
+    socket.on('call-accepted', ({ from }) => {
       console.log(`Call accepted by: ${from}`);
       setCallState('in-call');
     });
 
-    newSocket.on('call-rejected', ({ from }) => {
+    socket.on('call-rejected', ({ from }) => {
       console.log(`Call rejected by: ${from}`);
       setCallState('idle');
       addMessage({
@@ -85,12 +82,12 @@ export const useWebRTC = (codename) => {
       });
     });
 
-    newSocket.on('call-ended', () => {
+    socket.on('call-ended', () => {
       console.log('Call ended by remote peer');
       endCall();
     });
 
-    newSocket.on('text-message', ({ from, codename: senderName, message, timestamp }) => {
+    socket.on('text-message', ({ from, codename: senderName, message, timestamp }) => {
       addMessage({
         type: 'user',
         from,
@@ -100,13 +97,12 @@ export const useWebRTC = (codename) => {
       });
     });
 
-    setSocket(newSocket);
-    return newSocket;
+    socket.connect();
+    return socket;
   }, []);
 
   // Join a room
   const joinRoom = useCallback((room) => {
-    if (!socket) return;
     
     setRoomId(room);
     socket.emit('join-room', { roomId: room, codename });
