@@ -109,6 +109,5 @@ io.on('connection', (socket) => {
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log(`\n🌐 EtherChat Signaling Server running on port ${PORT}`);
-  console.log(`📡 WebSocket endpoint: ws://localhost:${PORT}`);
   console.log(`⚡ Ready to handle WebRTC signaling...\n`);
 });
