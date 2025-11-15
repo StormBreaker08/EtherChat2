@@ -7,6 +7,15 @@ const app = express();
 app.use(cors());
 
 const server = http.createServer(app);
+
+app.get("/", (req, res) => {
+  res.send("EtherChat signaling server is running");
+});
+
+app.get("/health", (req, res) => {
+  res.send("OK");
+});
+
 const io = socketIo(server, {
   cors: {
     origin: "*",
