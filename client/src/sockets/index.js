@@ -1,8 +1,9 @@
 import { io } from 'socket.io-client';
+const server_url = import.meta.env.VITE_SERVER_URL;
 
-const socket = io(['https://etherchat1.onrender.com',
-  'http://localhost:3001'
-], {
+
+const socket = io(server_url,
+    {
       transports: ['websocket', 'polling']
     });
 
