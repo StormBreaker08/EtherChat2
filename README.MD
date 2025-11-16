@@ -454,12 +454,6 @@ Contributions are welcome! Please follow these steps:
 
 ---
 
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
----
-
 ## 🙏 Acknowledgments
 
 - WebRTC for peer-to-peer communication
@@ -468,16 +462,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Web Audio API for voice processing
 - Tailwind CSS for styling
 - Lucide React for icons
-
----
-
-## 📧 Support
-
-For issues, questions, or suggestions:
-
-- Open an issue on GitHub
-- Email: your-email@example.com
-- Discord: your-discord-server
 
 ---
 
@@ -496,6 +480,6 @@ For issues, questions, or suggestions:
 
 ---
 
-**Made with 💚 by [Your Name]**
+**Made with 💚 by Kishan N Kishore, Keerthan Sanil, Arshith, Poorvi S Karkera
 
 ⚡ End-to-End Encrypted | 🔒 No Data Retention | 👻 Completely Anonymous
