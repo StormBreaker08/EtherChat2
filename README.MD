@@ -139,7 +139,7 @@ Terminal 1 (Server):
 
 ```bash
 cd server
-npm run dev
+node index.js
 ```
 
 Terminal 2 (Client):
