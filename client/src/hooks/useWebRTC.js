@@ -262,6 +262,29 @@ export const useWebRTC = (codename) => {
     localStreamRef.current = stream;
   }, []);
 
+  // Update local stream and replace tracks in existing peers
+  const updateLocalStream = useCallback((newStream) => {
+    localStreamRef.current = newStream;
+
+    // Update all existing peer connections with new tracks
+    peersMapRef.current.forEach((peer) => {
+      try {
+        const audioTrack = newStream.getAudioTracks()[0];
+        const senders = peer._pc.getSenders();
+        const audioSender = senders.find(
+          (sender) => sender.track?.kind === "audio"
+        );
+
+        if (audioSender && audioTrack) {
+          audioSender.replaceTrack(audioTrack);
+          console.log("Updated audio track in peer connection");
+        }
+      } catch (error) {
+        console.error("Error updating peer track:", error);
+      }
+    });
+  }, []);
+
   // Get remote stream
   const getRemoteStream = useCallback(() => remoteStreamRef.current, []);
 
@@ -294,6 +317,7 @@ export const useWebRTC = (codename) => {
     joinRoom,
     sendMessage,
     setLocalStream,
+    updateLocalStream, // Add this to exports
     getRemoteStream,
     initiateCall,
     acceptCall,

@@ -85,6 +85,12 @@ function App() {
 
   // Handle filter change
   const handleFilterChange = async (newFilter) => {
+    // Prevent filter changes during active calls
+    if (webrtc.callState === 'in-call') {
+      alert('Cannot change voice filter during an active call. Please end the call first.');
+      return;
+    }
+    
     if (micEnabled) {
       const newStream = await voiceMask.changeFilter(newFilter);
       if (newStream) {
@@ -238,6 +244,7 @@ function App() {
               filterType={voiceMask.filterType}
               onFilterChange={handleFilterChange}
               isProcessing={voiceMask.isProcessing}
+              callState={webrtc.callState} // Add this
             />
             
             {voiceMask.isProcessing && (

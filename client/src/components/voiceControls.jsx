@@ -5,7 +5,8 @@ const VoiceControls = ({
   onToggleMic, 
   filterType, 
   onFilterChange,
-  isProcessing 
+  isProcessing,
+  callState // Add this prop
 }) => {
   const filters = [
     { 
@@ -78,12 +79,12 @@ const VoiceControls = ({
               <button
                 key={filter.id}
                 onClick={() => onFilterChange(filter.id)}
-                disabled={!micEnabled && filter.id !== 'none'}
+                disabled={!micEnabled && filter.id !== 'none' || callState === 'in-call'} // Add callState check
                 className={`p-4 rounded-lg border-2 transition-all duration-200 text-left ${
                   isActive
                     ? `border-${filter.color} bg-${filter.color}/10`
                     : 'border-matrix-900 bg-cyber-dark hover:border-matrix-800'
-                } ${(!micEnabled && filter.id !== 'none') ? 'opacity-50 cursor-not-allowed' : ''}`}
+                } ${(!micEnabled && filter.id !== 'none' || callState === 'in-call') ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 <div className="flex items-center space-x-3 mb-2">
                   <div className={`p-2 rounded ${isActive ? `bg-${filter.color}` : 'bg-cyber-dark'}`}>
