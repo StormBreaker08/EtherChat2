@@ -4,7 +4,6 @@
 
 EtherChat is a secure, anonymous real-time communication application that provides end-to-end encrypted voice calls with voice masking capabilities and text messaging. Built with React, Node.js, WebRTC, and Socket.IO.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Node](https://img.shields.io/badge/node-%3E%3D16.0.0-green.svg)
 ![React](https://img.shields.io/badge/react-18.2.0-blue.svg)
 
